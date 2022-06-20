@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "1020345771219",
+    "project_id": "foto-app-bb05d",
+    "storage_bucket": "foto-app-bb05d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1020345771219:android:69e6da727ce0e6e01d2026",
+        "android_client_info": {
+          "package_name": "com.example.fotoapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1020345771219-phcnfthqbi6bjodveqfe9g8bjmhc3bah.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA3qYhAEpEOvgjfekCGUZE39mpS4JkQCKA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1020345771219-phcnfthqbi6bjodveqfe9g8bjmhc3bah.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1020345771219-o4ao2qlsvcsq7nlpkej4a2lpu1ickkt9.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.fotoapp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,18 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+class DoneChallenge {
+  final String photoChallengeId;
+
+  DoneChallenge({
+    required this.photoChallengeId,
+  });
+
+  Map<String, dynamic> toMap() {
+    return {
+      'photoChallengeId': photoChallengeId,
+    };
+  }
+
+  DoneChallenge.fromDocumentSnapshot(DocumentSnapshot<Map<String, dynamic>> doc)
+      : photoChallengeId = doc.data()!["photoChallengeId"];
+}
