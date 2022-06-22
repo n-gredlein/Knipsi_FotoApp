@@ -7,6 +7,7 @@ class Photo {
   final String photoChallengeID;
   final String photoUrl;
   final String userID;
+  final String genreID;
   final Map<String, dynamic>? ratings;
 
   Photo({
@@ -14,6 +15,7 @@ class Photo {
     required this.photoChallengeID,
     required this.photoUrl,
     required this.userID,
+    required this.genreID,
     this.ratings,
   });
 
@@ -22,6 +24,7 @@ class Photo {
         'photoChallengeID': photoChallengeID,
         'photoUrl': photoUrl,
         'userID': userID,
+        'genreID': genreID,
         'ratings': ratings,
       };
 
@@ -30,5 +33,6 @@ class Photo {
       photoChallengeID: json['photoChallengeID'],
       photoUrl: json['photoUrl'],
       userID: json['userID'],
+      genreID: json['genreID'],
       ratings: json['ratings']);
 }

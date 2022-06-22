@@ -353,22 +353,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             // A button that navigates to a named route.
 // The named route extracts the arguments
 // by itself.
-            ElevatedButton(
-              onPressed: () {
-                // When the user taps the button,
-                // navigate to a named route and
-                // provide the arguments as an optional
-                // parameter.
-                Navigator.pushNamed(
-                  context,
-                  PhotoChallengePage.routeName,
-                  arguments: PhotoChallengeArguments(
-                    'Extract Arguments Screen',
-                  ),
-                );
-              },
-              child: const Text('Navigate to screen that extracts arguments'),
-            ),
           ],
         )));
   }

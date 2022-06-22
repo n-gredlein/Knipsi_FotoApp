@@ -3,9 +3,11 @@ import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:fotoapp/pages/DoneChallengePage.dart';
 import 'package:fotoapp/services/AuthService.dart';
 import 'package:fotoapp/widgets/Button1.dart';
+import 'package:fotoapp/widgets/ChipFilter.dart';
 import 'package:smooth_star_rating_nsafe/smooth_star_rating.dart';
 import 'package:fotoapp/widgets/RatingCard.dart';
 import '../../AppColors.dart';
+import '../../datamodels/Genre.dart';
 import '../../datamodels/Photo.dart';
 import '../../services/DatabaseService.dart';
 import '../../widgets/LoadingProgressIndicator.dart';
@@ -13,13 +15,6 @@ import '../../widgets/Textfield1.dart';
 
 DatabaseService service = DatabaseService();
 AuthService authService = AuthService();
-/*Future<List<Photo>>? photoList;
-List<Photo>? retrievedPhotoList;
-
-Future<void> _initRetrieval() async {
-  photoList = service.retrievePhotos();
-  retrievedPhotoList = await service.retrievePhotos();
-}*/
 
 class InspirationPage extends StatefulWidget {
   @override
@@ -27,11 +22,7 @@ class InspirationPage extends StatefulWidget {
 }
 
 class _InspirationPageState extends State<InspirationPage> {
-  /*@override
-  void initState() {
-    super.initState();
-    _initRetrieval();
-  }*/
+  List<String> _filters = <String>[];
 
   @override
   Widget build(BuildContext context) {
@@ -57,8 +48,61 @@ class _InspirationPageState extends State<InspirationPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              StreamBuilder<List<Genre>>(
+                  stream: service.readGenres(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError) {
+                      return Text(
+                          'Ups! Da ist etwas falsch gelaufen ${snapshot.error}');
+                    } else if (snapshot.hasData) {
+                      final genres = snapshot.data!;
+
+                      return Expanded(
+                          child: ListView.builder(
+                              itemCount: genres.length,
+                              itemBuilder: (context, index) {
+                                return Container(
+                                    margin: EdgeInsets.only(
+                                        left: 10,
+                                        right: 5,
+                                        top: 10,
+                                        bottom: 10),
+                                    child: FilterChip(
+                                        showCheckmark: false,
+                                        label: Text(genres[index].name),
+                                        selected:
+                                            _filters.contains(genres[index].id),
+                                        selectedColor: AppColors.primaryColor,
+                                        backgroundColor:
+                                            AppColors.secundaryColor,
+                                        shadowColor: null,
+                                        selectedShadowColor:
+                                            AppColors.backgroundColorYellow,
+                                        avatar: (_filters
+                                                .contains(genres[index].name))
+                                            ? Icon(FeatherIcons.check)
+                                            : null,
+                                        onSelected: (bool value) {
+                                          setState(() {
+                                            value
+                                                ? _filters.add(genres[index].id)
+                                                : _filters.removeWhere(
+                                                    (String name) =>
+                                                        name ==
+                                                        genres[index].id);
+                                          });
+                                        }));
+                              }));
+                    } else {
+                      return Center(
+                        child: LoadingProgressIndicator(),
+                      );
+                    }
+                  }),
               StreamBuilder<List<Photo>>(
-                  stream: service.readPhotos(),
+                  stream: _filters.isNotEmpty
+                      ? service.readPhotosGenreFilter(_filters)
+                      : service.readPhotos(),
                   builder: (context, snapshot) {
                     if (snapshot.hasError) {
                       return Text(

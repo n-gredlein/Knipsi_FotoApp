@@ -57,6 +57,13 @@ class DatabaseService {
     await docPhoto.set(json);
   }
 
+  Stream<List<Photo>> readPhotosGenreFilter(List filters) => _db
+      .collection('photos')
+      .where('genreID', whereIn: filters)
+      .snapshots()
+      .map((snapshot) =>
+          snapshot.docs.map((doc) => Photo.fromJson(doc.data())).toList());
+
   Stream<List<Photo>> readPhotos() =>
       _db.collection('photos').snapshots().map((snapshot) =>
           snapshot.docs.map((doc) => Photo.fromJson(doc.data())).toList());

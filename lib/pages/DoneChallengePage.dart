@@ -17,6 +17,7 @@ import 'package:share_plus/share_plus.dart';
 import 'package:http/http.dart' as http;
 import '../AppRoutes.dart';
 import '../arguments/PhotoChallengeArguments.dart';
+import '../arguments/PhotoChallengeGenreArguments.dart';
 import '../datamodels/Photo.dart';
 import '../datamodels/PhotoChallenge.dart';
 import '../services/DatabaseService.dart';
@@ -249,9 +250,10 @@ class _DoneChallengePageState extends State<DoneChallengePage> {
                                                       context,
                                                       AppRoutes.upload,
                                                       arguments:
-                                                          PhotoChallengeArguments(
+                                                          PhotoChallengeGenreArguments(
+                                                              photoChallenge.id,
                                                               photoChallenge
-                                                                  .id),
+                                                                  .genre),
                                                     );
                                                   }),
                                             ],

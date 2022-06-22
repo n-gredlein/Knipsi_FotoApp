@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:fotoapp/AppColors.dart';
 import 'package:fotoapp/arguments/PhotoChallengeArguments.dart';
+import 'package:fotoapp/arguments/PhotoChallengeGenreArguments.dart';
 import 'package:fotoapp/custom_icons.dart';
 import 'package:fotoapp/services/AuthService.dart';
 import 'package:fotoapp/widgets/AppBarTop.dart';
@@ -51,8 +52,8 @@ class PhotoChallengePage extends StatelessWidget {
                       ],
                       onTap: [
                         () => Navigator.pushNamed(context, AppRoutes.upload,
-                            arguments:
-                                PhotoChallengeArguments(photoChallenge.id)),
+                            arguments: PhotoChallengeGenreArguments(
+                                photoChallenge.id, photoChallenge.genre)),
                         () async {
                           final urlImage = photoChallenge.titlePhoto;
                           final url = Uri.parse(urlImage);

@@ -18,6 +18,7 @@ import 'package:fotoapp/widgets/AppBarTop.dart';
 
 import '../AppColors.dart';
 import '../arguments/PhotoChallengeArguments.dart';
+import '../arguments/PhotoChallengeGenreArguments.dart';
 import '../widgets/Button1.dart';
 import '../widgets/LoadingProgressIndicator.dart';
 
@@ -37,8 +38,8 @@ class _UploadPageState extends State<UploadPage> {
 
   @override
   Widget build(BuildContext context) {
-    final args =
-        ModalRoute.of(context)!.settings.arguments as PhotoChallengeArguments;
+    final args = ModalRoute.of(context)!.settings.arguments
+        as PhotoChallengeGenreArguments;
 
     return Scaffold(
       appBar: AppBar(
@@ -156,7 +157,8 @@ class _UploadPageState extends State<UploadPage> {
                             final photo = Photo(
                                 photoChallengeID: args.photoChallengeId,
                                 photoUrl: urlDownload,
-                                userID: authService.getCurrentUserEmail());
+                                userID: authService.getCurrentUserEmail(),
+                                genreID: args.genreId);
                             service.createPhoto(photo);
                             service
                                 .addDonePhotoChallenge(args.photoChallengeId);
