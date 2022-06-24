@@ -146,8 +146,12 @@ class _RegistrationPageState extends State<RegistrationPage> {
                   final email = emailController.text;
                   final name = nameController.text;
                   final password = passwordController.text;
+                  final currentChallenge = 0;
 
-                  final userdb = Userdb(name: name, email: email);
+                  final userdb = Userdb(
+                      name: name,
+                      email: email,
+                      currentChallenge: currentChallenge);
                   authservice.create(email, password);
                   service.createUser(userdb);
                   Navigator.of(context).pushReplacement(

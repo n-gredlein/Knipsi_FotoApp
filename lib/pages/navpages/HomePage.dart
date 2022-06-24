@@ -1,9 +1,11 @@
+import 'package:cron/cron.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fotoapp/AppColors.dart';
 import 'package:fotoapp/arguments/PhotoChallengeArguments.dart';
 import 'package:fotoapp/datamodels/PhotoChallenge.dart';
 import 'package:fotoapp/services/AuthService.dart';
+import 'package:fotoapp/widgets/Button1.dart';
 import 'package:fotoapp/widgets/PhotoCard.dart';
 import '../../datamodels/Genre.dart';
 import '../../datamodels/Userdb.dart';
@@ -72,30 +74,93 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                         }
                       }),*/
                   Container(
-                    padding: EdgeInsets.only(
-                        top: 20, bottom: 20, left: 10, right: 10),
+                    padding: EdgeInsets.only(top: 20, left: 10, right: 10),
                     child: StreamBuilder<List<PhotoChallenge>>(
-                        stream: service
-                            .readPhotoChallengeId('3Bunk5d0pYl9MNnkecSr'),
+                        stream: service.readPhotoChallenges(),
                         builder: (context, snapshot) {
                           if (snapshot.hasError) {
                             return Text(
                                 'Ups! Es ist etwas falsch gelaufen. ${snapshot.error}');
                           } else if (snapshot.hasData) {
-                            final photoChallenge = snapshot.data![0];
+                            final photoChallenges = snapshot.data;
 
-                            return photoChallenge == null
+                            return photoChallenges == null
                                 ? Center(child: Text('No PhotoChallenge'))
-                                : PhotoCard(
-                                    text: photoChallenge.title,
-                                    subtext: photoChallenge.shortDescription,
-                                    photoChallengeId: '3Bunk5d0pYl9MNnkecSr',
-                                    saved: photoChallenge.usersSaved!.contains(
-                                        authService.getCurrentUserEmail()),
-                                    done: photoChallenge.usersDone!.contains(
-                                        authService.getCurrentUserEmail()),
-                                    imgUrl: photoChallenge.titlePhoto,
-                                  );
+                                : StreamBuilder<List<Userdb>>(
+                                    stream: service.readUser(),
+                                    builder: (context, snapshot) {
+                                      if (snapshot.hasError) {
+                                        return Text(
+                                            'Ups! Es ist etwas falsch gelaufen. ${snapshot.error}');
+                                      } else if (snapshot.hasData) {
+                                        var challengeCounter = snapshot
+                                            .data![0].currentChallenge
+                                            .toInt();
+
+                                        return Column(children: [
+                                          PhotoCard(
+                                            text: photoChallenges[
+                                                    challengeCounter]
+                                                .title,
+                                            subtext: photoChallenges[
+                                                    challengeCounter]
+                                                .shortDescription,
+                                            photoChallengeId: photoChallenges[
+                                                    challengeCounter]
+                                                .id,
+                                            saved: photoChallenges[
+                                                    challengeCounter]
+                                                .usersSaved!
+                                                .contains(authService
+                                                    .getCurrentUserEmail()),
+                                            done: photoChallenges[
+                                                    challengeCounter]
+                                                .usersDone!
+                                                .contains(authService
+                                                    .getCurrentUserEmail()),
+                                            imgUrl: photoChallenges[
+                                                    challengeCounter]
+                                                .titlePhoto,
+                                          ),
+                                          Container(
+                                            margin: EdgeInsets.all(10),
+                                            child: Button1(
+                                              text:
+                                                  'Fotochallenge überspringen',
+                                              color: AppColors.primaryColor,
+                                              onPressed: () {
+                                                challengeCounter++;
+                                                if (challengeCounter >=
+                                                    photoChallenges.length -
+                                                        1) {
+                                                  challengeCounter = 0;
+                                                }
+                                                if (photoChallenges[
+                                                        challengeCounter]
+                                                    .usersDone!
+                                                    .contains(authService
+                                                        .getCurrentUserEmail())) {
+                                                  challengeCounter++;
+                                                }
+
+                                                service.updateUser(
+                                                    authService
+                                                        .getCurrentUserEmail(),
+                                                    {
+                                                      'currentChallenge':
+                                                          challengeCounter
+                                                    });
+                                              },
+                                              width: double.infinity,
+                                            ),
+                                          )
+                                        ]);
+                                      } else {
+                                        return Center(
+                                          child: LoadingProgressIndicator(),
+                                        );
+                                      }
+                                    });
                           } else {
                             return Center(child: LoadingProgressIndicator());
                           }
@@ -296,21 +361,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                     return Center(child: LoadingProgressIndicator());
                   }
                 }),
-            FutureBuilder<Userdb?>(
-                future: service.readUser('5z8vQ3aJGG41EvTRIXDp'),
-                builder: (context, snapshot) {
-                  if (snapshot.hasError) {
-                    return Text(
-                        'Ups! Es ist etwas falsch gelaufen. ${snapshot.error}');
-                  } else if (snapshot.hasData) {
-                    final user = snapshot.data;
-                    return user == null
-                        ? Center(child: Text('No User'))
-                        : buildUser(user);
-                  } else {
-                    return Center(child: LoadingProgressIndicator());
-                  }
-                }),
+
             IconButton(
                 onPressed: () {
                   final updatedData = {'email': 'nadi@lein.de'};

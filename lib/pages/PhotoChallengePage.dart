@@ -205,8 +205,9 @@ class PhotoChallengePage extends StatelessWidget {
                                               } else if (snapshot.hasData) {
                                                 final photos = snapshot.data!;
                                                 if (photos.length == 0) {
-                                                  return Text(
-                                                      'Es wurden noch keine Fotos hochgeladen.');
+                                                  return Center(
+                                                      child: Text(
+                                                          'Es wurden noch keine Fotos hochgeladen.'));
                                                 } else if (photos.length > 0 &&
                                                     photos.length < 3) {
                                                   return GridView.builder(
@@ -221,10 +222,28 @@ class PhotoChallengePage extends StatelessWidget {
                                                     ),
                                                     itemBuilder:
                                                         (context, index) {
+                                                      var r;
+                                                      if (photos[index]
+                                                                  .ratings?[
+                                                              authService
+                                                                  .getCurrentUserEmail()
+                                                                  .replaceAll(
+                                                                      '.',
+                                                                      '_')] ==
+                                                          null) {
+                                                        r = 0.0;
+                                                      } else {
+                                                        r = photos[index]
+                                                            .ratings?[authService
+                                                                .getCurrentUserEmail()
+                                                                .replaceAll(
+                                                                    '.', '_')]
+                                                            .toDouble();
+                                                      }
                                                       return RatingCard(
-                                                          imgUrl:
-                                                              'photos[index].photoUrl.toString()',
-                                                          rate: 5,
+                                                          imgUrl: photos[index]
+                                                              .photoUrl,
+                                                          rate: r,
                                                           photoId:
                                                               photos[index].id);
                                                     },
@@ -244,9 +263,29 @@ class PhotoChallengePage extends StatelessWidget {
                                                           ),
                                                           itemBuilder:
                                                               (context, index) {
+                                                            var r;
+                                                            if (photos[index]
+                                                                        .ratings?[
+                                                                    authService
+                                                                        .getCurrentUserEmail()
+                                                                        .replaceAll(
+                                                                            '.',
+                                                                            '_')] ==
+                                                                null) {
+                                                              r = 0.0;
+                                                            } else {
+                                                              r = photos[index]
+                                                                  .ratings?[authService
+                                                                      .getCurrentUserEmail()
+                                                                      .replaceAll(
+                                                                          '.',
+                                                                          '_')]
+                                                                  .toDouble();
+                                                            }
                                                             return RatingCard(
-                                                                imgUrl:
-                                                                    'photos[index].photoUrl.toString()',
+                                                                imgUrl: photos[
+                                                                        index]
+                                                                    .photoUrl,
                                                                 rate: 2,
                                                                 photoId: photos[
                                                                         index]

@@ -56,43 +56,48 @@ class _InspirationPageState extends State<InspirationPage> {
                           'Ups! Da ist etwas falsch gelaufen ${snapshot.error}');
                     } else if (snapshot.hasData) {
                       final genres = snapshot.data!;
-
-                      return Expanded(
-                          child: ListView.builder(
-                              itemCount: genres.length,
-                              itemBuilder: (context, index) {
-                                return Container(
-                                    margin: EdgeInsets.only(
-                                        left: 10,
-                                        right: 5,
-                                        top: 10,
-                                        bottom: 10),
-                                    child: FilterChip(
-                                        showCheckmark: false,
-                                        label: Text(genres[index].name),
-                                        selected:
-                                            _filters.contains(genres[index].id),
-                                        selectedColor: AppColors.primaryColor,
-                                        backgroundColor:
-                                            AppColors.secundaryColor,
-                                        shadowColor: null,
-                                        selectedShadowColor:
-                                            AppColors.backgroundColorYellow,
-                                        avatar: (_filters
-                                                .contains(genres[index].name))
-                                            ? Icon(FeatherIcons.check)
-                                            : null,
-                                        onSelected: (bool value) {
-                                          setState(() {
-                                            value
-                                                ? _filters.add(genres[index].id)
-                                                : _filters.removeWhere(
-                                                    (String name) =>
-                                                        name ==
-                                                        genres[index].id);
-                                          });
-                                        }));
-                              }));
+                      return Container(
+                          height: 50,
+                          child: Flexible(
+                              child: ListView.builder(
+                                  shrinkWrap: true,
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: genres.length,
+                                  itemBuilder: (context, index) {
+                                    return Container(
+                                        margin: EdgeInsets.only(
+                                            left: 10,
+                                            right: 5,
+                                            top: 10,
+                                            bottom: 10),
+                                        child: FilterChip(
+                                            showCheckmark: false,
+                                            label: Text(genres[index].name),
+                                            selected: _filters
+                                                .contains(genres[index].id),
+                                            selectedColor:
+                                                AppColors.primaryColor,
+                                            backgroundColor:
+                                                AppColors.secundaryColor,
+                                            shadowColor: null,
+                                            selectedShadowColor:
+                                                AppColors.backgroundColorYellow,
+                                            avatar: (_filters.contains(
+                                                    genres[index].name))
+                                                ? Icon(FeatherIcons.check)
+                                                : null,
+                                            onSelected: (bool value) {
+                                              setState(() {
+                                                value
+                                                    ? _filters
+                                                        .add(genres[index].id)
+                                                    : _filters.removeWhere(
+                                                        (String name) =>
+                                                            name ==
+                                                            genres[index].id);
+                                              });
+                                            }));
+                                  })));
                     } else {
                       return Center(
                         child: LoadingProgressIndicator(),

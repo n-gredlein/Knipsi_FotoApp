@@ -18,10 +18,7 @@ class DatabaseService {
   /**********User**********/
   Future createUser(Userdb userdb) async {
     final docUser = _db.collection('users').doc(userdb.email);
-
-    //userdb.id = docUser.id;
     final json = userdb.toJson();
-
     await docUser.set(json);
   }
 
@@ -29,13 +26,20 @@ class DatabaseService {
       _db.collection('users').snapshots().map((snapshot) =>
           snapshot.docs.map((doc) => Userdb.fromJson(doc.data())).toList());
 
-  Future<Userdb?> readUser(String docId) async {
+  /* Future<Userdb?> readUser(String docId) async {
     final docUser = _db.collection('users').doc(docId);
     final snapshot = await docUser.get();
     if (snapshot.exists) {
       return Userdb.fromJson(snapshot.data()!);
     }
-  }
+  }*/
+
+  Stream<List<Userdb>> readUser() => _db
+      .collection('users')
+      .where('email', isEqualTo: authService.getCurrentUserEmail())
+      .snapshots()
+      .map((snapshot) =>
+          snapshot.docs.map((doc) => Userdb.fromJson(doc.data())).toList());
 
   Future updateUser(String userId, Map<String, Object?> data) async {
     final docUser = _db.collection('users').doc(userId);
@@ -244,12 +248,4 @@ class DatabaseService {
           .map((snapshot) => snapshot.docs
               .map((doc) => PhotoChallenge.fromJson(doc.data()))
               .toList());
-
-  /**********Ratings**********/
-  Stream<List<Photo>> readRating(String docId) => _db
-      .collection('photoChallenges')
-      .where('ratings', arrayContains: 'n@n.de')
-      .snapshots()
-      .map((snapshot) =>
-          snapshot.docs.map((doc) => Photo.fromJson(doc.data())).toList());
 }
