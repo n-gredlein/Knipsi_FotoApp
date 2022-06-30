@@ -68,11 +68,12 @@ class _UploadPageState extends State<UploadPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Container(
+                          height: MediaQuery.of(context).size.height * 0.6,
                           child: Image.file(
-                        File(pickedFile!.path!),
-                        width: double.infinity,
-                        fit: BoxFit.contain,
-                      )),
+                            File(pickedFile!.path!),
+                            width: double.infinity,
+                            fit: BoxFit.contain,
+                          )),
                       Container(
                         decoration: BoxDecoration(
                             color: AppColors.backgroundColorYellow),
