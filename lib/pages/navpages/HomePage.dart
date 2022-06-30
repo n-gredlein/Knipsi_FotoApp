@@ -61,18 +61,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                       style: Theme.of(context).textTheme.headline1,
                     ),
                   ),
-                  /*FutureBuilder(
-                      future: photochallengesList,
-                      builder: (BuildContext context,
-                          AsyncSnapshot<List<PhotoChallenge>> snapshot) {
-                        if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-                          return Text(
-                              "${retrievedPhotochallengeById!.title.toString()}");
-                        } else {
-                          return const Center(
-                              child: CircularProgressIndicator());
-                        }
-                      }),*/
                   Container(
                     padding: EdgeInsets.only(top: 20, left: 10, right: 10),
                     child: StreamBuilder<List<PhotoChallenge>>(
@@ -97,6 +85,22 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                             .data![0].currentChallenge
                                             .toInt();
 
+                                        /* if (challengeCounter >=
+                                            photoChallenges.length - 1) {
+                                          challengeCounter = 0;
+                                        }
+                                        if (photoChallenges[challengeCounter]
+                                            .usersDone!
+                                            .contains(authService
+                                                .getCurrentUserEmail())) {
+                                          challengeCounter++;
+                                        }
+
+                                        service.updateUser(
+                                            authService.getCurrentUserEmail(), {
+                                          'currentChallenge': challengeCounter
+                                        });
+*/
                                         return Column(children: [
                                           PhotoCard(
                                             text: photoChallenges[
@@ -228,6 +232,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                                         '${photoChallenges[i].shortDescription.toString()}',
                                                     photoChallengeId:
                                                         '${photoChallenges[i].id.toString()}',
+                                                    imgUrl: photoChallenges[i]
+                                                        .titlePhoto,
                                                     saved: photoChallenges[i]
                                                         .usersSaved!
                                                         .contains(authService
@@ -252,80 +258,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                     );
                   }
                 }),
-
-            /*child: FutureBuilder(
-                  future: genreList,
-                  builder: (BuildContext context,
-                      AsyncSnapshot<List<Genre>> snapshot) {
-                    if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-                      return Expanded(
-                          child: ListView.builder(
-                        itemCount: retrievedGenreList!.length,
-                        itemBuilder: (context, index) {
-                          return Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                padding: EdgeInsets.only(
-                                  left: 10,
-                                  right: 10,
-                                  top: 10,
-                                ),
-                                child: Text(
-                                  "${retrievedGenreList![index].name.toString()}",
-                                  style: Theme.of(context).textTheme.headline3,
-                                  textAlign: TextAlign.left,
-                                ),
-                              ),
-                              Container(
-                                  height: 332,
-                                  child: FutureBuilder(
-                                      future: photochallengesList,
-                                      builder: (BuildContext context,
-                                          AsyncSnapshot<List<PhotoChallenge>>
-                                              snapshot) {
-                                        if (snapshot.hasData &&
-                                            snapshot.data!.isNotEmpty) {
-                                          return Expanded(
-                                            child: ListView.builder(
-                                                scrollDirection:
-                                                    Axis.horizontal,
-                                                padding: EdgeInsets.only(
-                                                  left: 10,
-                                                  right: 10,
-                                                ),
-                                                itemCount: 3,
-                                                itemBuilder: (context, index) {
-                                                  if (retrievedPhotochallengesList![
-                                                              index]
-                                                          .categoryId ==
-                                                      retrievedGenreList![index]
-                                                          .id) {
-                                                    return MiniPhotoCard(
-                                                        text:
-                                                            "${retrievedPhotochallengesList![index].title.toString()}",
-                                                        subtext:
-                                                            "${retrievedPhotochallengesList![index].shortDescription.toString()}");
-                                                  } else {
-                                                    return Container();
-                                                  }
-                                                }),
-                                          );
-                                        } else {
-                                          return const Center(
-                                              child:
-                                                  CircularProgressIndicator());
-                                        }
-                                      })),
-                            ],
-                          );
-                        },
-                      ));
-                    } else {
-                      return const Center(child: CircularProgressIndicator());
-                    }
-                  }),*/
-
             TextField(
               controller: controller,
             ),
@@ -361,7 +293,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                     return Center(child: LoadingProgressIndicator());
                   }
                 }),
-
             IconButton(
                 onPressed: () {
                   final updatedData = {'email': 'nadi@lein.de'};
@@ -373,37 +304,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   service.deleteUser('yyWXklKC2xO1BxnYA76I');
                 },
                 icon: Icon(Icons.delete)),
-
-            /* FloatingActionButton(
-                onPressed: (() async {
-                  PhotoChallenge photoChallenge = PhotoChallenge(
-                    title: "Test Foto!!!",
-                    shortDescription: "Testi",
-                    description: "blalbkadsljfsidjf",
-                    tipp: "retrievedPhotoList![index].photoUrl.toString(),",
-                    categoryId: "blablabla",
-                  );
-
-                  await service.addPhotoChallenge(photoChallenge);
-                }),
-                child: const Text(
-                  "Add PhotoChallenge",
-                )),
-            FloatingActionButton(
-                onPressed: (() async {
-                  Genre genre = Genre(
-                    name: "Architekturfotografie",
-                  );
-
-                  await service.addGenre(genre);
-                }),
-                child: const Text(
-                  "Add Genre",
-                )),*/
-
-            // A button that navigates to a named route.
-// The named route extracts the arguments
-// by itself.
           ],
         )));
   }

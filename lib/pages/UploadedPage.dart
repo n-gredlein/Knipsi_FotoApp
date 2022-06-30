@@ -36,16 +36,22 @@ class UploadedPage extends StatelessWidget {
                           'Ups! Da ist etwas falsch gelaufen ${snapshot.error}');
                     } else if (snapshot.hasData) {
                       final photoChallenge = snapshot.data!;
-                      return ListView.builder(
-                          physics: NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          itemCount: photoChallenge.length,
-                          itemBuilder: (context, i) {
-                            return DonePhotoCard(
-                                text: photoChallenge[i].title,
-                                subtext: photoChallenge[i].shortDescription,
-                                photoChallengeId: photoChallenge[i].id);
-                          });
+                      return photoChallenge.isEmpty
+                          ? Center(
+                              heightFactor: 3,
+                              child:
+                                  Text('Keine gespeicherten Fotochallenges.'))
+                          : ListView.builder(
+                              physics: NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              itemCount: photoChallenge.length,
+                              itemBuilder: (context, i) {
+                                return DonePhotoCard(
+                                    text: photoChallenge[i].title,
+                                    subtext: photoChallenge[i].shortDescription,
+                                    imgUrl: photoChallenge[i].titlePhoto,
+                                    photoChallengeId: photoChallenge[i].id);
+                              });
                     } else {
                       return Center(
                         child: LoadingProgressIndicator(),

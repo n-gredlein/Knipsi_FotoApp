@@ -65,6 +65,7 @@ class MyApp extends StatelessWidget {
             hoverColor: AppColors.secundaryColor,
             focusColor: AppColors.backgroundColorYellow,
             shadowColor: AppColors.secundaryColor,
+            accentColor: AppColors.primaryColor,
             fontFamily: 'Sora',
             textTheme: TextTheme(
               headline1: TextStyle(

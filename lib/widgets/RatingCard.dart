@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:fotoapp/custom_icons.dart';
@@ -113,7 +114,8 @@ class _RatingCardState extends State<RatingCard>
           child: GestureDetector(
               onTap: removeOverlay,
               child: Container(
-                  width: size.width, child: Image.network(widget.imgUrl))),
+                  width: size.width,
+                  child: CachedNetworkImage(imageUrl: widget.imgUrl))),
         )
       ]);
     });

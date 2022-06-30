@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
@@ -62,21 +63,25 @@ class _DoneChallengePageState extends State<DoneChallengePage> {
                         stream: service
                             .readPhotoByPhotoChallengeId(photoChallenge.id),
                         builder: (context, snapshot) {
-                          return FABButton(onTap: () async {
-                            final photo = snapshot.data![0];
-                            final urlImage = photo.photoUrl;
-                            final url = Uri.parse(urlImage);
-                            final response = await http.get(url);
-                            final bytes = response.bodyBytes;
+                          if (deleted == false) {
+                            return FABButton(onTap: () async {
+                              final photo = snapshot.data![0];
+                              final urlImage = photo.photoUrl;
+                              final url = Uri.parse(urlImage);
+                              final response = await http.get(url);
+                              final bytes = response.bodyBytes;
 
-                            final temp = await getTemporaryDirectory();
-                            final path = '${temp.path}/image.jpg';
-                            File(path).writeAsBytesSync(bytes);
+                              final temp = await getTemporaryDirectory();
+                              final path = '${temp.path}/image.jpg';
+                              File(path).writeAsBytesSync(bytes);
 
-                            await Share.shareFiles([path],
-                                text:
-                                    'Das ist meine Knipsi-Fotochallenge zum Thema: ${photoChallenge.title}. #becreativewithKNIPSI');
-                          });
+                              await Share.shareFiles([path],
+                                  text:
+                                      'Das ist meine Knipsi-Fotochallenge zum Thema: ${photoChallenge.title}. #becreativewithKNIPSI');
+                            });
+                          } else {
+                            return SizedBox();
+                          }
                         }),
                     body: CustomScrollView(
                       slivers: <Widget>[
@@ -97,10 +102,11 @@ class _DoneChallengePageState extends State<DoneChallengePage> {
                           foregroundColor: AppColors.textBlack,
                           pinned: true,
                           expandedHeight: 260.0,
-                          flexibleSpace: const FlexibleSpaceBar(
+                          flexibleSpace: FlexibleSpaceBar(
                             expandedTitleScale: 2,
                             background: Image(
-                              image: AssetImage("assets/images/testbild.jpg"),
+                              image: CachedNetworkImageProvider(
+                                  photoChallenge.titlePhoto),
                               fit: BoxFit.cover,
                             ),
                             centerTitle: true,
@@ -153,75 +159,73 @@ class _DoneChallengePageState extends State<DoneChallengePage> {
                                                   } else {
                                                     final photo =
                                                         snapshot.data![0];
-                                                    return Card(
-                                                      elevation: 2,
-                                                      shape: RoundedRectangleBorder(
-                                                          borderRadius:
-                                                              BorderRadius.all(
-                                                                  Radius
+                                                    return Container(
+                                                        margin: EdgeInsets.only(
+                                                            bottom: 70),
+                                                        child: Card(
+                                                          elevation: 2,
+                                                          shape: RoundedRectangleBorder(
+                                                              borderRadius: BorderRadius
+                                                                  .all(Radius
                                                                       .circular(
                                                                           20))),
-                                                      shadowColor: AppColors
-                                                          .secundaryColor,
-                                                      child: Column(
-                                                        children: [
-                                                          buildImage(
-                                                              photo.photoUrl),
-                                                          Container(
-                                                              margin: EdgeInsets
-                                                                  .all(10),
-                                                              child: Row(
-                                                                  mainAxisAlignment:
-                                                                      MainAxisAlignment
-                                                                          .spaceBetween,
-                                                                  children: [
-                                                                    Container(
-                                                                      child:
-                                                                          Row(
-                                                                        children: [
-                                                                          Icon(
-                                                                            FeatherIcons.star,
-                                                                            size:
-                                                                                40,
+                                                          shadowColor: AppColors
+                                                              .secundaryColor,
+                                                          child: Column(
+                                                            children: [
+                                                              buildImage(photo
+                                                                  .photoUrl),
+                                                              Container(
+                                                                  margin:
+                                                                      EdgeInsets
+                                                                          .all(
+                                                                              10),
+                                                                  child: Row(
+                                                                      mainAxisAlignment:
+                                                                          MainAxisAlignment
+                                                                              .spaceBetween,
+                                                                      children: [
+                                                                        Container(
+                                                                          child:
+                                                                              Row(
+                                                                            children: [
+                                                                              Icon(
+                                                                                FeatherIcons.star,
+                                                                                size: 40,
+                                                                              ),
+                                                                              SizedBox(
+                                                                                width: 10,
+                                                                              ),
+                                                                              if (photo.ratings != null)
+                                                                                Text(((photo.ratings!.values.reduce((value, element) => value + element) / photo.ratings!.length).round().toString()) + '/5'),
+                                                                              if (photo.ratings == null)
+                                                                                Text('Keine Bewertung'),
+                                                                            ],
                                                                           ),
-                                                                          SizedBox(
-                                                                            width:
-                                                                                10,
+                                                                        ),
+                                                                        Container(
+                                                                          padding:
+                                                                              EdgeInsets.all(15),
+                                                                          decoration:
+                                                                              BoxDecoration(
+                                                                            color:
+                                                                                AppColors.secundaryColor,
+                                                                            borderRadius:
+                                                                                BorderRadius.circular(100),
                                                                           ),
-                                                                          if (photo.ratings !=
-                                                                              null)
-                                                                            Text(((photo.ratings!.values.reduce((value, element) => value + element) / photo.ratings!.length).round().toString()) +
-                                                                                '/5'),
-                                                                          if (photo.ratings ==
-                                                                              null)
-                                                                            Text('Keine Bewertung'),
-                                                                        ],
-                                                                      ),
-                                                                    ),
-                                                                    Container(
-                                                                      padding:
-                                                                          EdgeInsets.all(
-                                                                              15),
-                                                                      decoration:
-                                                                          BoxDecoration(
-                                                                        color: AppColors
-                                                                            .secundaryColor,
-                                                                        borderRadius:
-                                                                            BorderRadius.circular(100),
-                                                                      ),
-                                                                      child: IconButton(
-                                                                          onPressed: () {
-                                                                            service.removeDonePhotoChallenge(args.photoChallengeId);
-                                                                            FirebaseStorage.instance.refFromURL(photo.photoUrl).delete();
-                                                                            service.deletePhoto(photo.id);
-                                                                            delte();
-                                                                          },
-                                                                          icon: Icon(FeatherIcons.trash)),
-                                                                    )
-                                                                  ]))
-                                                        ],
-                                                      ),
-                                                    );
+                                                                          child: IconButton(
+                                                                              onPressed: () {
+                                                                                service.removeDonePhotoChallenge(args.photoChallengeId);
+                                                                                FirebaseStorage.instance.refFromURL(photo.photoUrl).delete();
+                                                                                service.deletePhoto(photo.id);
+                                                                                delte();
+                                                                              },
+                                                                              icon: Icon(FeatherIcons.trash)),
+                                                                        )
+                                                                      ])),
+                                                            ],
+                                                          ),
+                                                        ));
                                                   }
                                                 } else {
                                                   return Center(

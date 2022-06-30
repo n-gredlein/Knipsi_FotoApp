@@ -35,24 +35,27 @@ class SavedPage extends StatelessWidget {
                           'Ups! Da ist etwas falsch gelaufen ${snapshot.error}');
                     } else if (snapshot.hasData) {
                       final photoChallenge = snapshot.data!;
-                      return ListView.builder(
-                          physics: NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          itemCount: photoChallenge.length,
-                          itemBuilder: (context, i) {
-                            return PhotoCard(
-                              text: photoChallenge[i].title,
-                              subtext: photoChallenge[i].shortDescription,
-                              photoChallengeId: photoChallenge[i].id,
-                              saved: photoChallenge[i]
-                                  .usersSaved!
-                                  .contains(authService.getCurrentUserEmail()),
-                              done: photoChallenge[i]
-                                  .usersDone!
-                                  .contains(authService.getCurrentUserEmail()),
-                              imgUrl: '',
-                            );
-                          });
+                      return photoChallenge.isEmpty
+                          ? Center(
+                              heightFactor: 3,
+                              child:
+                                  Text('Keine gespeicherten Fotochallenges.'))
+                          : ListView.builder(
+                              physics: NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              itemCount: photoChallenge.length,
+                              itemBuilder: (context, i) {
+                                return PhotoCard(
+                                  text: photoChallenge[i].title,
+                                  subtext: photoChallenge[i].shortDescription,
+                                  photoChallengeId: photoChallenge[i].id,
+                                  saved: photoChallenge[i].usersSaved!.contains(
+                                      authService.getCurrentUserEmail()),
+                                  done: photoChallenge[i].usersDone!.contains(
+                                      authService.getCurrentUserEmail()),
+                                  imgUrl: photoChallenge[i].titlePhoto,
+                                );
+                              });
                     } else {
                       return Center(
                         child: LoadingProgressIndicator(),

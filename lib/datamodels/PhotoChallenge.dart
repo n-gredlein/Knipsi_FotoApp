@@ -13,7 +13,6 @@ class PhotoChallenge {
   final String titlePhoto;
   List<dynamic>? usersDone;
   List<dynamic>? usersSaved;
-  List<dynamic>? currentChallenges;
 
   PhotoChallenge({
     this.id = '',

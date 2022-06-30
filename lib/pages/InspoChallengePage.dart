@@ -13,6 +13,7 @@ import '../datamodels/Photo.dart';
 import '../widgets/LoadingProgressIndicator.dart';
 
 DatabaseService service = DatabaseService();
+AuthService authService = AuthService();
 
 class InspoChallengePage extends StatelessWidget {
   const InspoChallengePage({Key? key}) : super(key: key);
@@ -50,6 +51,7 @@ class InspoChallengePage extends StatelessWidget {
                           'Ups! Da ist etwas falsch gelaufen ${snapshot.error}');
                     } else if (snapshot.hasData) {
                       final photos = snapshot.data!;
+
                       return Expanded(
                           child: GridView.builder(
                         itemCount: photos.length,
@@ -59,6 +61,20 @@ class InspoChallengePage extends StatelessWidget {
                           mainAxisSpacing: 5,
                         ),
                         itemBuilder: (context, index) {
+                          var r;
+                          if (photos[index].ratings?[authService
+                                  .getCurrentUserEmail()
+                                  .replaceAll('.', '_')] ==
+                              null) {
+                            r = 0.0;
+                          } else {
+                            r = photos[index]
+                                .ratings?[authService
+                                    .getCurrentUserEmail()
+                                    .replaceAll('.', '_')]
+                                .toDouble();
+                          }
+
                           return RatingCard(
                               imgUrl: 'photos[index].photoUrl.toString()',
                               rate: 2.0,

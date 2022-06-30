@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:fotoapp/AppColors.dart';
 import 'package:fotoapp/arguments/PhotoChallengeArguments.dart';
@@ -10,6 +11,7 @@ class DonePhotoCard extends StatelessWidget {
   final String text;
   final String subtext;
   final String photoChallengeId;
+  final String imgUrl;
 
   //final Image image;
   DonePhotoCard({
@@ -17,6 +19,7 @@ class DonePhotoCard extends StatelessWidget {
     required this.text,
     required this.subtext,
     required this.photoChallengeId,
+    required this.imgUrl,
   }) : super(key: key);
 
   @override
@@ -36,7 +39,7 @@ class DonePhotoCard extends StatelessWidget {
                     topLeft: Radius.circular(20.0),
                     topRight: Radius.circular(20.0)),
                 image: DecorationImage(
-                  image: AssetImage("assets/images/testbild.jpg"),
+                  image: CachedNetworkImageProvider(imgUrl),
                   fit: BoxFit.cover,
                 )),
           ),

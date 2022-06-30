@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:fotoapp/custom_icons.dart';
 import 'package:fotoapp/services/AuthService.dart';
@@ -16,6 +17,7 @@ class MiniPhotoCard extends StatelessWidget {
   final String text;
   final String subtext;
   final String photoChallengeId;
+  final String imgUrl;
   final bool saved;
   final bool done;
 
@@ -24,6 +26,7 @@ class MiniPhotoCard extends StatelessWidget {
     required this.text,
     required this.subtext,
     required this.photoChallengeId,
+    required this.imgUrl,
     required this.saved,
     required this.done,
   }) : super(key: key);
@@ -48,7 +51,7 @@ class MiniPhotoCard extends StatelessWidget {
                         topLeft: Radius.circular(20.0),
                         topRight: Radius.circular(20.0)),
                     image: DecorationImage(
-                      image: AssetImage("assets/images/testbild.jpg"),
+                      image: CachedNetworkImageProvider(imgUrl),
                       fit: BoxFit.cover,
                     )),
               ),

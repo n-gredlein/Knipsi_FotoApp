@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:fotoapp/AppColors.dart';
@@ -48,7 +49,7 @@ class PhotoChallengePage extends StatelessWidget {
                     floatingActionButton: FABMenu(
                       icons: [
                         Icon(FeatherIcons.upload),
-                        Icon(FeatherIcons.instagram)
+                        Icon(FeatherIcons.share2)
                       ],
                       onTap: [
                         () => Navigator.pushNamed(context, AppRoutes.upload,
@@ -89,10 +90,11 @@ class PhotoChallengePage extends StatelessWidget {
                           foregroundColor: AppColors.textBlack,
                           pinned: true,
                           expandedHeight: 260.0,
-                          flexibleSpace: const FlexibleSpaceBar(
+                          flexibleSpace: FlexibleSpaceBar(
                             expandedTitleScale: 2,
                             background: Image(
-                              image: AssetImage("assets/images/testbild.jpg"),
+                              image: CachedNetworkImageProvider(
+                                  photoChallenge.titlePhoto),
                               fit: BoxFit.cover,
                             ),
                             centerTitle: true,

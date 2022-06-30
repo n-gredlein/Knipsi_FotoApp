@@ -4,7 +4,8 @@ import 'package:fotoapp/arguments/PhotoChallengeArguments.dart';
 import 'package:fotoapp/custom_icons.dart';
 import 'package:fotoapp/services/DatabaseService.dart';
 import 'package:fotoapp/widgets/TextButtonIcon.dart';
-import "package:flutter_feather_icons/flutter_feather_icons.dart";
+import 'package:flutter_feather_icons/flutter_feather_icons.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 import '../AppRoutes.dart';
 
@@ -46,7 +47,7 @@ class PhotoCard extends StatelessWidget {
                     topLeft: Radius.circular(20.0),
                     topRight: Radius.circular(20.0)),
                 image: DecorationImage(
-                  image: NetworkImage(imgUrl),
+                  image: CachedNetworkImageProvider(imgUrl),
                   fit: BoxFit.cover,
                 )),
           ),
