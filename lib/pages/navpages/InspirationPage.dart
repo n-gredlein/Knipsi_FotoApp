@@ -106,36 +106,38 @@ class _InspirationPageState extends State<InspirationPage> {
                           'Ups! Da ist etwas falsch gelaufen ${snapshot.error}');
                     } else if (snapshot.hasData) {
                       final photos = snapshot.data!;
-                      return Expanded(
-                          child: GridView.builder(
-                        itemCount: photos.length,
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          crossAxisSpacing: 5,
-                          mainAxisSpacing: 5,
-                        ),
-                        itemBuilder: (context, index) {
-                          var r;
-                          if (photos[index].ratings?[authService
-                                  .getCurrentUserEmail()
-                                  .replaceAll('.', '_')] ==
-                              null) {
-                            r = 0.0;
-                          } else {
-                            r = photos[index]
-                                .ratings?[authService
+                      return Stack(fit: StackFit.expand, children: [
+                        GridView.builder(
+                          itemCount: photos.length,
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            crossAxisSpacing: 5,
+                            mainAxisSpacing: 5,
+                          ),
+                          itemBuilder: (context, index) {
+                            var r;
+                            if (photos[index].ratings?[authService
                                     .getCurrentUserEmail()
-                                    .replaceAll('.', '_')]
-                                .toDouble();
-                          }
+                                    .replaceAll('.', '_')] ==
+                                null) {
+                              r = 0.0;
+                            } else {
+                              r = photos[index]
+                                  .ratings?[authService
+                                      .getCurrentUserEmail()
+                                      .replaceAll('.', '_')]
+                                  .toDouble();
+                            }
 
-                          return RatingCard(
-                            imgUrl: photos[index].photoUrl.toString(),
-                            rate: r,
-                            photoId: photos[index].id,
-                          );
-                        },
-                      ));
+                            return RatingCard(
+                              imgUrl: photos[index].photoUrl.toString(),
+                              rate: r,
+                              photoId: photos[index].id,
+                            );
+                          },
+                        )
+                      ]);
                     } else {
                       return Center(
                         child: LoadingProgressIndicator(),
