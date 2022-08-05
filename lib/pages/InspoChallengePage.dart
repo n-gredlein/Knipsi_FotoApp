@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
-import 'package:fotoapp/pages/navpages/InspirationPage.dart';
 import 'package:fotoapp/services/AuthService.dart';
 import 'package:fotoapp/services/DatabaseService.dart';
-import 'package:fotoapp/widgets/Button1.dart';
-import 'package:smooth_star_rating_nsafe/smooth_star_rating.dart';
 import 'package:fotoapp/widgets/RatingCard.dart';
-
 import '../AppColors.dart';
 import '../arguments/PhotoChallengeArguments.dart';
 import '../datamodels/Photo.dart';
@@ -76,8 +72,8 @@ class InspoChallengePage extends StatelessWidget {
                           }
 
                           return RatingCard(
-                              imgUrl: 'photos[index].photoUrl.toString()',
-                              rate: 2.0,
+                              imgUrl: photos[index].photoUrl.toString(),
+                              rate: r,
                               photoId: photos[index].id);
                         },
                       ));

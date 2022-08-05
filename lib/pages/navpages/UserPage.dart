@@ -1,15 +1,7 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables
-
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:fotoapp/AppColors.dart';
-import 'package:fotoapp/widgets/Button1.dart';
-import 'package:fotoapp/widgets/PhotoCard.dart';
-
 import '../../services/AuthService.dart';
-import '../LoginPage.dart';
-import '../PhotoChallengePage.dart';
 import '../SavedPage.dart';
 import '../StartPage.dart';
 import '../UploadedPage.dart';

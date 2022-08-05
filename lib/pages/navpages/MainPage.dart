@@ -6,7 +6,6 @@ import 'package:fotoapp/AppColors.dart';
 import 'package:fotoapp/pages/navpages/HomePage.dart';
 import 'package:fotoapp/pages/navpages/InspirationPage.dart';
 import 'package:fotoapp/pages/navpages/UserPage.dart';
-import 'package:fotoapp/widgets/AppBarTop.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);

@@ -1,27 +1,17 @@
 import 'dart:io';
-import 'dart:math';
-
 import 'package:dotted_border/dotted_border.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:fotoapp/AppRoutes.dart';
 import 'package:fotoapp/datamodels/Photo.dart';
-import 'package:fotoapp/datamodels/PhotoChallenge.dart';
-import 'package:fotoapp/datamodels/Userdb.dart';
-//import 'package:google_ml_kit/google_ml_kit.dart';
-
 import 'package:fotoapp/services/AuthService.dart';
 import 'package:fotoapp/services/DatabaseService.dart';
-import 'package:fotoapp/widgets/AppBarTop.dart';
-
 import '../AppColors.dart';
 import '../arguments/PhotoChallengeArguments.dart';
 import '../arguments/PhotoChallengeGenreArguments.dart';
 import '../widgets/Button1.dart';
-import '../widgets/LoadingProgressIndicator.dart';
 
 AuthService authService = AuthService();
 DatabaseService service = DatabaseService();
@@ -140,12 +130,15 @@ class _UploadPageState extends State<UploadPage> {
                           width: double.infinity,
                           text: 'hochladen',
                           onPressed: () async {
+                            // Der Datei wird ein eindeutiger Name gegeben.
                             final path =
                                 'uploadedPhotos/${args.photoChallengeId}_${authService.getCurrentUserEmail()}';
                             final file = File(pickedFile!.path!);
 
                             final ref =
                                 FirebaseStorage.instance.ref().child(path);
+
+                            // Der uploadTask wird initialisiert
                             setState(() {
                               uploadTask = ref.putFile(file);
                             });
@@ -156,6 +149,7 @@ class _UploadPageState extends State<UploadPage> {
                             final urlDownload =
                                 await snapshot.ref.getDownloadURL();
 
+                            // Das Foto wird im Firestore mit dem Downloadlink gespeichert
                             final photo = Photo(
                                 photoChallengeID: args.photoChallengeId,
                                 photoUrl: urlDownload,
@@ -165,6 +159,7 @@ class _UploadPageState extends State<UploadPage> {
                             service
                                 .addDonePhotoChallenge(args.photoChallengeId);
 
+                            // Der uploadTask wird nach dem Hochladen mit null initialisiert
                             setState(() {
                               uploadTask = null;
                             });
@@ -244,15 +239,4 @@ class _UploadPageState extends State<UploadPage> {
           ])),
     );
   }
-
-  /* Future getLabels(String path) async {
-    final inputImage = InputImage.fromFilePath(path);
-    final labelDetector = GoogleMlKit.vision.imageLabeler();
-    final List<ImageLabel> _imageLabel =
-        await labelDetector.processImage(inputImage);
-
-    for (var index in _imageLabel) {
-      print(index);
-    }
-  }*/
 }

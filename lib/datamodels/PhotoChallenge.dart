@@ -9,7 +9,6 @@ class PhotoChallenge {
   final String description;
   final String tipp;
   final String categoryId;
-  final String genre;
   final String titlePhoto;
   List<dynamic>? usersDone;
   List<dynamic>? usersSaved;
@@ -21,7 +20,6 @@ class PhotoChallenge {
     required this.description,
     required this.tipp,
     required this.categoryId,
-    required this.genre,
     required this.titlePhoto,
     this.usersDone,
     this.usersSaved,
@@ -34,7 +32,6 @@ class PhotoChallenge {
         'description': description,
         'tipp': tipp,
         'categoryId': categoryId,
-        'genre': genre,
         'photo': titlePhoto,
         'usersDone': usersDone,
         'usersSaved': usersSaved,
@@ -46,7 +43,6 @@ class PhotoChallenge {
       shortDescription: json['shortDescription'],
       description: json['description'],
       tipp: json['tipp'],
-      genre: json['genre'],
       titlePhoto: json['titlePhoto'],
       categoryId: json['categoryId'],
       usersDone: json['usersDone'],

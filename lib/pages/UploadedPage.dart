@@ -1,13 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:fotoapp/datamodels/Photo.dart';
 import 'package:fotoapp/datamodels/PhotoChallenge.dart';
 import 'package:fotoapp/services/AuthService.dart';
 import 'package:fotoapp/services/DatabaseService.dart';
-import 'package:fotoapp/widgets/Button1.dart';
 import 'package:fotoapp/widgets/DonePhotoCard.dart';
-import 'package:fotoapp/widgets/PhotoCard.dart';
-
-import '../widgets/AppBarTop.dart';
 import '../widgets/LoadingProgressIndicator.dart';
 
 final service = DatabaseService();

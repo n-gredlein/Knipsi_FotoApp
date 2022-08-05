@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:fotoapp/AppColors.dart';
 import 'package:fotoapp/pages/navpages/MainPage.dart';
-
 import '../services/AuthService.dart';
 import '../services/DatabaseService.dart';
 import '../widgets/Button1.dart';
@@ -116,6 +115,7 @@ class _LoginPageState extends State<LoginPage> {
                   final email = emailController.text;
                   final password = passwordController.text;
                   authservice.login(email, password);
+
                   Navigator.of(context).pushReplacement(
                       MaterialPageRoute(builder: (context) => MainPage()));
                 },

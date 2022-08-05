@@ -2,14 +2,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:fotoapp/AppColors.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-
-import '../datamodels/Photo.dart';
 import '../datamodels/Userdb.dart';
 import '../services/AuthService.dart';
 import '../services/DatabaseService.dart';
 import '../widgets/Button1.dart';
-import '../widgets/Textfield1.dart';
 import 'navpages/MainPage.dart';
 
 DatabaseService service = DatabaseService();

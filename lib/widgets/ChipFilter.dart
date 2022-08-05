@@ -1,16 +1,7 @@
 import 'dart:core';
-import 'dart:core';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
-import 'package:fotoapp/custom_icons.dart';
-import 'package:fotoapp/pages/DoneChallengePage.dart';
-import 'package:fotoapp/pages/InspoChallengePage.dart';
-import 'package:fotoapp/services/AuthService.dart';
-import 'package:fotoapp/services/DatabaseService.dart';
-import 'package:fotoapp/widgets/TextButtonIcon.dart';
-import 'package:smooth_star_rating_nsafe/smooth_star_rating.dart';
-
 import '../AppColors.dart';
 
 class ChipFilter extends StatefulWidget {

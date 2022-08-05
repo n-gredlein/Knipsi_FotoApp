@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:io';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
@@ -9,15 +8,11 @@ import 'package:fotoapp/arguments/PhotoChallengeArguments.dart';
 import 'package:fotoapp/arguments/PhotoChallengeGenreArguments.dart';
 import 'package:fotoapp/custom_icons.dart';
 import 'package:fotoapp/services/AuthService.dart';
-import 'package:fotoapp/widgets/AppBarTop.dart';
 import 'package:fotoapp/widgets/Button1.dart';
 import 'package:fotoapp/widgets/FABMenu.dart';
-import 'package:fotoapp/widgets/PhotoCard.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
-
 import 'package:http/http.dart' as http;
-
 import '../AppRoutes.dart';
 import '../datamodels/Photo.dart';
 import '../datamodels/PhotoChallenge.dart';
@@ -54,7 +49,7 @@ class PhotoChallengePage extends StatelessWidget {
                       onTap: [
                         () => Navigator.pushNamed(context, AppRoutes.upload,
                             arguments: PhotoChallengeGenreArguments(
-                                photoChallenge.id, photoChallenge.genre)),
+                                photoChallenge.id, photoChallenge.categoryId)),
                         () async {
                           final urlImage = photoChallenge.titlePhoto;
                           final url = Uri.parse(urlImage);
@@ -212,7 +207,15 @@ class PhotoChallengePage extends StatelessWidget {
                                                           'Es wurden noch keine Fotos hochgeladen.'));
                                                 } else if (photos.length > 0 &&
                                                     photos.length < 3) {
+                                                  double padding = 0.0;
+                                                  if (photos.length == 1) {
+                                                    padding = 90.0;
+                                                  }
+
                                                   return GridView.builder(
+                                                    padding: EdgeInsets.only(
+                                                        left: padding,
+                                                        right: padding),
                                                     shrinkWrap: true,
                                                     itemCount: photos.length,
                                                     gridDelegate:
@@ -242,18 +245,18 @@ class PhotoChallengePage extends StatelessWidget {
                                                                     '.', '_')]
                                                             .toDouble();
                                                       }
-                                                      return RatingCard(
+                                                      return (RatingCard(
                                                           imgUrl: photos[index]
                                                               .photoUrl,
                                                           rate: r,
-                                                          photoId:
-                                                              photos[index].id);
+                                                          photoId: photos[index]
+                                                              .id));
                                                     },
                                                   );
                                                 } else {
                                                   return Column(children: [
                                                     Container(
-                                                        height: 259,
+                                                        height: 243,
                                                         child: GridView.builder(
                                                           shrinkWrap: true,
                                                           itemCount: 2,

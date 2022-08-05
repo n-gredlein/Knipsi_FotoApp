@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -7,14 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:fotoapp/AppColors.dart';
 import 'package:fotoapp/services/AuthService.dart';
-import 'package:fotoapp/widgets/AppBarTop.dart';
 import 'package:fotoapp/widgets/Button1.dart';
-import 'package:fotoapp/widgets/FABMenu.dart';
 import 'package:fotoapp/widgets/FABButton.dart';
-import 'package:fotoapp/widgets/PhotoCard.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
-
 import 'package:http/http.dart' as http;
 import '../AppRoutes.dart';
 import '../arguments/PhotoChallengeArguments.dart';
@@ -23,7 +18,6 @@ import '../datamodels/Photo.dart';
 import '../datamodels/PhotoChallenge.dart';
 import '../services/DatabaseService.dart';
 import '../widgets/LoadingProgressIndicator.dart';
-import '../widgets/RatingCard.dart';
 
 DatabaseService service = DatabaseService();
 AuthService authService = AuthService();
@@ -257,7 +251,7 @@ class _DoneChallengePageState extends State<DoneChallengePage> {
                                                           PhotoChallengeGenreArguments(
                                                               photoChallenge.id,
                                                               photoChallenge
-                                                                  .genre),
+                                                                  .categoryId),
                                                     );
                                                   }),
                                             ],
@@ -325,59 +319,3 @@ class _DoneChallengePageState extends State<DoneChallengePage> {
     entry = null;
   }
 }
-
-
-
-/*SizedBox(
-                          height: 20,
-                        ),
-                        Card(
-                          elevation: 2,
-                          shape: RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(20))),
-                          shadowColor: AppColors.secundaryColor,
-                          child: Column(
-                            children: [
-                              Container(
-                                height: 200.0,
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(20.0),
-                                        topRight: Radius.circular(20.0)),
-                                    image: DecorationImage(
-                                      image: AssetImage(
-                                          "assets/images/testbild.jpg"),
-                                      fit: BoxFit.cover,
-                                    )),
-                              ),
-                              Container(
-                                  margin: EdgeInsets.all(10),
-                                  child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Container(
-                                          child: Row(
-                                            children: [
-                                              Icon(Icons.star),
-                                              Text("4,5/10"),
-                                            ],
-                                          ),
-                                        ),
-                                        Container(
-                                          color: AppColors.primaryColor,
-                                          child: IconButton(
-                                              onPressed: () {},
-                                              icon: Icon(Icons.delete)),
-                                        )
-                                      ])),
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                          height: 40,
-                        ),*/
-
-                        

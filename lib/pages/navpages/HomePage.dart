@@ -1,8 +1,6 @@
-import 'package:cron/cron.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fotoapp/AppColors.dart';
-import 'package:fotoapp/arguments/PhotoChallengeArguments.dart';
 import 'package:fotoapp/datamodels/PhotoChallenge.dart';
 import 'package:fotoapp/services/AuthService.dart';
 import 'package:fotoapp/widgets/Button1.dart';
@@ -12,7 +10,6 @@ import '../../datamodels/Userdb.dart';
 import '../../services/DatabaseService.dart';
 import '../../widgets/LoadingProgressIndicator.dart';
 import '../../widgets/MiniPhotoCard.dart';
-import '../PhotoChallengePage.dart';
 
 final auth = FirebaseAuth.instance;
 DatabaseService service = DatabaseService();
@@ -67,8 +64,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                         stream: service.readPhotoChallenges(),
                         builder: (context, snapshot) {
                           if (snapshot.hasError) {
-                            return Text(
-                                'Ups! Es ist etwas falsch gelaufen. ${snapshot.error}');
+                            return Text('${snapshot.error}');
                           } else if (snapshot.hasData) {
                             final photoChallenges = snapshot.data;
 
@@ -78,29 +74,12 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                     stream: service.readUser(),
                                     builder: (context, snapshot) {
                                       if (snapshot.hasError) {
-                                        return Text(
-                                            'Ups! Es ist etwas falsch gelaufen. ${snapshot.error}');
+                                        return Text('${snapshot.error}');
                                       } else if (snapshot.hasData) {
                                         var challengeCounter = snapshot
                                             .data![0].currentChallenge
                                             .toInt();
 
-                                        /* if (challengeCounter >=
-                                            photoChallenges.length - 1) {
-                                          challengeCounter = 0;
-                                        }
-                                        if (photoChallenges[challengeCounter]
-                                            .usersDone!
-                                            .contains(authService
-                                                .getCurrentUserEmail())) {
-                                          challengeCounter++;
-                                        }
-
-                                        service.updateUser(
-                                            authService.getCurrentUserEmail(), {
-                                          'currentChallenge': challengeCounter
-                                        });
-*/
                                         return Column(children: [
                                           PhotoCard(
                                             text: photoChallenges[
@@ -133,6 +112,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                                   'Fotochallenge überspringen',
                                               color: AppColors.primaryColor,
                                               onPressed: () {
+                                                // Der Wert wird nach oben gezählt
                                                 challengeCounter++;
                                                 if (challengeCounter >=
                                                     photoChallenges.length -
@@ -147,6 +127,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                                   challengeCounter++;
                                                 }
 
+                                                // Der Wert „currentChallenge wird im Firestore aktualisiert
                                                 service.updateUser(
                                                     authService
                                                         .getCurrentUserEmail(),
@@ -220,7 +201,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                                       return Container(
                                           margin: EdgeInsets.symmetric(
                                               horizontal: 10.0),
-                                          height: 307.0,
+                                          height: 327.0,
                                           child: ListView.builder(
                                               scrollDirection: Axis.horizontal,
                                               itemCount: photoChallenges.length,
@@ -261,53 +242,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             TextField(
               controller: controller,
             ),
-            IconButton(
-                icon: Icon(Icons.add),
-                onPressed: () {
-                  //final name = controller.text;
-                  final user = PhotoChallenge(
-                      title: 'title',
-                      shortDescription: 'shortDescription',
-                      description: 'description',
-                      tipp: 'tipp',
-                      genre: 'genre',
-                      categoryId: 'categoryId',
-                      titlePhoto: '');
-                  service.createPhotoChallenge(user);
-                }),
-            StreamBuilder<List<Userdb>>(
-                stream: service.readUsers(),
-                builder: (context, snapshot) {
-                  if (snapshot.hasError) {
-                    return Text(
-                        'Ups! Da ist etwas falsch gelaufen ${snapshot.error}');
-                  } else if (snapshot.hasData) {
-                    final users = snapshot.data!;
-                    return SizedBox(
-                        height: 200,
-                        child: ListView(
-                          shrinkWrap: true,
-                          children: users.map(buildUser).toList(),
-                        ));
-                  } else {
-                    return Center(child: LoadingProgressIndicator());
-                  }
-                }),
-            IconButton(
-                onPressed: () {
-                  final updatedData = {'email': 'nadi@lein.de'};
-                  service.updateUser('yyWXklKC2xO1BxnYA76I', updatedData);
-                },
-                icon: Icon(Icons.update)),
-            IconButton(
-                onPressed: () {
-                  service.deleteUser('yyWXklKC2xO1BxnYA76I');
-                },
-                icon: Icon(Icons.delete)),
           ],
         )));
   }
 }
-
-Widget buildUser(Userdb user) => ListTile(
-    leading: CircleAvatar(child: Text('$user.name')), title: Text(user.email));

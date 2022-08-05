@@ -1,17 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
-import 'package:fotoapp/pages/DoneChallengePage.dart';
 import 'package:fotoapp/services/AuthService.dart';
-import 'package:fotoapp/widgets/Button1.dart';
-import 'package:fotoapp/widgets/ChipFilter.dart';
-import 'package:smooth_star_rating_nsafe/smooth_star_rating.dart';
 import 'package:fotoapp/widgets/RatingCard.dart';
 import '../../AppColors.dart';
 import '../../datamodels/Genre.dart';
 import '../../datamodels/Photo.dart';
 import '../../services/DatabaseService.dart';
 import '../../widgets/LoadingProgressIndicator.dart';
-import '../../widgets/Textfield1.dart';
 
 DatabaseService service = DatabaseService();
 AuthService authService = AuthService();
@@ -33,15 +28,6 @@ class _InspirationPageState extends State<InspirationPage> {
           backgroundColor: AppColors.backgroundColorWhite,
           foregroundColor: AppColors.textBlack,
           centerTitle: true,
-          bottom: PreferredSize(
-              child: Container(
-                margin: EdgeInsets.all(10),
-                child: Textfield1(
-                  text: "Suche",
-                  icon: FeatherIcons.search,
-                ),
-              ),
-              preferredSize: Size(0, 80)),
         ),
         body: Container(
           margin: EdgeInsets.only(left: 10, right: 10),
@@ -73,6 +59,9 @@ class _InspirationPageState extends State<InspirationPage> {
                                         child: FilterChip(
                                             showCheckmark: false,
                                             label: Text(genres[index].name),
+
+                                            // Wenn das jeweilige Genre in _filters enhalten ist, gilt der
+                                            // FilterChip als „selected“
                                             selected: _filters
                                                 .contains(genres[index].id),
                                             selectedColor:
@@ -86,6 +75,9 @@ class _InspirationPageState extends State<InspirationPage> {
                                                     genres[index].name))
                                                 ? Icon(FeatherIcons.check)
                                                 : null,
+
+                                            // Beim Tippen auf den FilterChip wird das jeweilige Genre
+                                            // entweder der Liste hinzugefügt oder wieder entfernt
                                             onSelected: (bool value) {
                                               setState(() {
                                                 value

@@ -13,7 +13,6 @@ class DonePhotoCard extends StatelessWidget {
   final String photoChallengeId;
   final String imgUrl;
 
-  //final Image image;
   DonePhotoCard({
     Key? key,
     required this.text,

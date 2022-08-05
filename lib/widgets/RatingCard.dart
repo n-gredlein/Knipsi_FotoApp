@@ -21,12 +21,12 @@ class RatingCard extends StatefulWidget {
   String imgUrl;
   double rate;
   String photoId;
-  RatingCard(
-      {Key? key,
-      required this.imgUrl,
-      required this.rate,
-      required this.photoId})
-      : super(key: key);
+  RatingCard({
+    Key? key,
+    required this.imgUrl,
+    required this.rate,
+    required this.photoId,
+  }) : super(key: key);
 }
 
 class _RatingCardState extends State<RatingCard>

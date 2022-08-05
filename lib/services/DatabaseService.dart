@@ -6,8 +6,6 @@ import 'package:fotoapp/datamodels/PhotoChallenge.dart';
 
 import 'package:fotoapp/datamodels/Userdb.dart';
 import 'package:fotoapp/pages/SavedPage.dart';
-import 'package:fotoapp/services/AuthService.dart';
-
 import '../datamodels/Photo.dart';
 import '../datamodels/Genre.dart';
 
@@ -25,14 +23,6 @@ class DatabaseService {
   Stream<List<Userdb>> readUsers() =>
       _db.collection('users').snapshots().map((snapshot) =>
           snapshot.docs.map((doc) => Userdb.fromJson(doc.data())).toList());
-
-  /* Future<Userdb?> readUser(String docId) async {
-    final docUser = _db.collection('users').doc(docId);
-    final snapshot = await docUser.get();
-    if (snapshot.exists) {
-      return Userdb.fromJson(snapshot.data()!);
-    }
-  }*/
 
   Stream<List<Userdb>> readUser() => _db
       .collection('users')
@@ -79,14 +69,6 @@ class DatabaseService {
       .map((snapshot) =>
           snapshot.docs.map((doc) => Photo.fromJson(doc.data())).toList());
 
-  Future<Photo?> readPhoto(String docId) async {
-    final docPhoto = _db.collection('photos').doc(docId);
-    final snapshot = await docPhoto.get();
-    if (snapshot.exists) {
-      return Photo.fromJson(snapshot.data()!);
-    }
-  }
-
   Stream<List<Photo>> readPhotoByPhotoChallengeId(String docId) => _db
       .collection('photos')
       .where('photoChallengeID', isEqualTo: docId)
@@ -124,27 +106,11 @@ class DatabaseService {
 
   Stream<List<PhotoChallenge>> readPhotoChallengesGenre(String genreId) => _db
       .collection('photoChallenges')
-      .where('genre', isEqualTo: genreId)
+      .where('categoryId', isEqualTo: genreId)
       .snapshots()
       .map((snapshot) => snapshot.docs
           .map((doc) => PhotoChallenge.fromJson(doc.data()))
           .toList());
-
-  Future<PhotoChallenge?> readPhotoChallenge(String docId) async {
-    final docPhotoChallenge = _db.collection('photoChallenges').doc(docId);
-    final snapshot = await docPhotoChallenge.get();
-    if (snapshot.exists) {
-      return PhotoChallenge.fromJson(snapshot.data()!);
-    }
-  }
-
-  /* Stream<PhotoChallenge?> readPhotoChallenge(String docId)  async {
-    final docPhotoChallenge = await  _db.collection('photoChallenges').doc(docId).get();
- PhotoChallenge.fromJson(docPhotoChallenge.data());
-    
-      return Future.PhotoChallenge.fromJson(snapshot.data()!);
-  
-  }*/
 
   Stream<List<PhotoChallenge>> readPhotoChallengeId(String docId) => _db
       .collection('photoChallenges')
@@ -180,14 +146,6 @@ class DatabaseService {
   Stream<List<Genre>> readGenres() =>
       _db.collection('genres').snapshots().map((snapshot) =>
           snapshot.docs.map((doc) => Genre.fromJson(doc.data())).toList());
-
-  Future<Genre?> readGenre(String docId) async {
-    final docGenre = _db.collection('categories').doc(docId);
-    final snapshot = await docGenre.get();
-    if (snapshot.exists) {
-      return Genre.fromJson(snapshot.data()!);
-    }
-  }
 
   Future updateGenre(String genreId, Map<String, Object?> data) async {
     final docGenre = _db.collection('genres').doc(genreId);
