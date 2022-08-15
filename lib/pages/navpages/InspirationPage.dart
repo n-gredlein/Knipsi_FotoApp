@@ -44,52 +44,50 @@ class _InspirationPageState extends State<InspirationPage> {
                       final genres = snapshot.data!;
                       return Container(
                           height: 50,
-                          child: Flexible(
-                              child: ListView.builder(
-                                  shrinkWrap: true,
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount: genres.length,
-                                  itemBuilder: (context, index) {
-                                    return Container(
-                                        margin: EdgeInsets.only(
-                                            left: 10,
-                                            right: 5,
-                                            top: 10,
-                                            bottom: 10),
-                                        child: FilterChip(
-                                            showCheckmark: false,
-                                            label: Text(genres[index].name),
+                          //child: Expanded(
+                          child: ListView.builder(
+                              shrinkWrap: true,
+                              scrollDirection: Axis.horizontal,
+                              itemCount: genres.length,
+                              itemBuilder: (context, index) {
+                                return Container(
+                                    margin: EdgeInsets.only(
+                                        left: 10,
+                                        right: 5,
+                                        top: 10,
+                                        bottom: 10),
+                                    child: FilterChip(
+                                        showCheckmark: false,
+                                        label: Text(genres[index].name),
 
-                                            // Wenn das jeweilige Genre in _filters enhalten ist, gilt der
-                                            // FilterChip als „selected“
-                                            selected: _filters
-                                                .contains(genres[index].id),
-                                            selectedColor:
-                                                AppColors.primaryColor,
-                                            backgroundColor:
-                                                AppColors.secundaryColor,
-                                            shadowColor: null,
-                                            selectedShadowColor:
-                                                AppColors.backgroundColorYellow,
-                                            avatar: (_filters.contains(
-                                                    genres[index].name))
-                                                ? Icon(FeatherIcons.check)
-                                                : null,
+                                        // Wenn das jeweilige Genre in _filters enhalten ist, gilt der
+                                        // FilterChip als „selected“
+                                        selected:
+                                            _filters.contains(genres[index].id),
+                                        selectedColor: AppColors.primaryColor,
+                                        backgroundColor:
+                                            AppColors.secundaryColor,
+                                        shadowColor: null,
+                                        selectedShadowColor:
+                                            AppColors.backgroundColorYellow,
+                                        avatar: (_filters
+                                                .contains(genres[index].name))
+                                            ? Icon(FeatherIcons.check)
+                                            : null,
 
-                                            // Beim Tippen auf den FilterChip wird das jeweilige Genre
-                                            // entweder der Liste hinzugefügt oder wieder entfernt
-                                            onSelected: (bool value) {
-                                              setState(() {
-                                                value
-                                                    ? _filters
-                                                        .add(genres[index].id)
-                                                    : _filters.removeWhere(
-                                                        (String name) =>
-                                                            name ==
-                                                            genres[index].id);
-                                              });
-                                            }));
-                                  })));
+                                        // Beim Tippen auf den FilterChip wird das jeweilige Genre
+                                        // entweder der Liste hinzugefügt oder wieder entfernt
+                                        onSelected: (bool value) {
+                                          setState(() {
+                                            value
+                                                ? _filters.add(genres[index].id)
+                                                : _filters.removeWhere(
+                                                    (String name) =>
+                                                        name ==
+                                                        genres[index].id);
+                                          });
+                                        }));
+                              }));
                     } else {
                       return Center(
                         child: LoadingProgressIndicator(),
@@ -106,38 +104,36 @@ class _InspirationPageState extends State<InspirationPage> {
                           'Ups! Da ist etwas falsch gelaufen ${snapshot.error}');
                     } else if (snapshot.hasData) {
                       final photos = snapshot.data!;
-                      return Stack(fit: StackFit.expand, children: [
-                        GridView.builder(
-                          itemCount: photos.length,
-                          gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            crossAxisSpacing: 5,
-                            mainAxisSpacing: 5,
-                          ),
-                          itemBuilder: (context, index) {
-                            var r;
-                            if (photos[index].ratings?[authService
+                      return Expanded(
+                          child: GridView.builder(
+                        itemCount: photos.length,
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 5,
+                          mainAxisSpacing: 5,
+                        ),
+                        itemBuilder: (context, index) {
+                          var r;
+                          if (photos[index].ratings?[authService
+                                  .getCurrentUserEmail()
+                                  .replaceAll('.', '_')] ==
+                              null) {
+                            r = 0.0;
+                          } else {
+                            r = photos[index]
+                                .ratings?[authService
                                     .getCurrentUserEmail()
-                                    .replaceAll('.', '_')] ==
-                                null) {
-                              r = 0.0;
-                            } else {
-                              r = photos[index]
-                                  .ratings?[authService
-                                      .getCurrentUserEmail()
-                                      .replaceAll('.', '_')]
-                                  .toDouble();
-                            }
+                                    .replaceAll('.', '_')]
+                                .toDouble();
+                          }
 
-                            return RatingCard(
-                              imgUrl: photos[index].photoUrl.toString(),
-                              rate: r,
-                              photoId: photos[index].id,
-                            );
-                          },
-                        )
-                      ]);
+                          return RatingCard(
+                            imgUrl: photos[index].photoUrl.toString(),
+                            rate: r,
+                            photoId: photos[index].id,
+                          );
+                        },
+                      ));
                     } else {
                       return Center(
                         child: LoadingProgressIndicator(),
